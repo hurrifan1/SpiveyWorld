@@ -1,0 +1,4 @@
+url: "http://spivey.world" # the base hostname & protocol for your site
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
