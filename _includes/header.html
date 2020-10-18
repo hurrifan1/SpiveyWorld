@@ -1,0 +1,7 @@
+<div class="header topbottom">
+    {% for item in site.data.nav_data %}
+        <div class="header topbottom-div">
+            <a class="header topbottom-link" href="{{ item.link }}" {% if page.url == item.link %}class="current" {% endif %}>{{ item.name }}</a>
+        </div>
+    {% endfor %}
+</div>

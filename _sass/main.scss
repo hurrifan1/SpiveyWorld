@@ -9,12 +9,16 @@ $pal-7: #cec917;
 $pal-8: rgb(76, 175, 80);
 
 html {
-  background-color: $pal-6;
+  // background-color: $pal-6;
+  font-family: 'Lato', sans-serif;
 }
 
 body {
+  margin: 0;
+}
+
+main {
   margin: 0 10vw;
-  font-family: 'Lato', sans-serif;
   background-color: white;
   padding: 5vw;
 }
@@ -42,10 +46,15 @@ body {
 h1,h2,h3,h4,h5,h6 {
   font-family: 'Sora', sans-serif;
   color: $pal-1;
-  margin-left: -7vw;
+  // margin-left: -7vw;
   background-color: $pal-4;
   box-shadow: 6px 6px 0px 0px $pal-7, -3px -3px 0px 3px white;
   padding: 5px;
+}
+
+p, table, ol, ul {
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 code {
@@ -58,6 +67,7 @@ table {
   margin: 0 auto;
   border: 1px solid $pal-1;
   box-shadow: 6px 6px 0px 0px $pal-1;
+  background-color: $pal-1;
 }
 
 thead {
@@ -74,9 +84,14 @@ tr {
   border-color: inherit;
 }
 
-tr:nth-child(even) {
+tbody tr:nth-child(even) {
   background-color: #eaeaea;
-  color: black;
+  color: $pal-1;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+  color: $pal-1;
 }
 
 th, td {
@@ -96,4 +111,32 @@ div.highlight {
   padding: 5px 13px 5px 10px;
 }
 
+.topbottom, .topbottom-div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
 
+.topbottom-div {
+  height: 100px;
+  // border: 2px solid red;
+  background: $pal-1;
+  width: 100%;
+}
+
+.topbottom-link {
+  text-decoration: none;
+  font-size: xx-large;
+  color: $pal-7;
+}
+
+footer {
+  position: absolute;
+  // bottom: 0;
+  left: 0;
+  right: 0;
+}

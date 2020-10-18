@@ -10,12 +10,18 @@
     {% seo %}
 </head>
 
-<header>
-    {% include navigation.html %}
-</header>
+
 
 <body>
-    {{ content }}
+    <header>
+        {% include header.html %}
+    </header>
+    <main>
+        {{ content }}
+    </main>
+    <footer>
+        {% include footer.html %}
+    </footer>
 </body>
 
 </html>

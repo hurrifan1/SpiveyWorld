@@ -1,0 +1,7 @@
+<div class="footer topbottom">
+    {% for item in site.data.footer_data %}
+        <div class="footer topbottom-div">
+            <a class="footer topbottom-link" href="{{ item.link }}" {% if page.url == item.link %}class="current" {% endif %}>{{ item.name }}</a>
+        </div>
+    {% endfor %}
+</div>

@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato&family=Sora:wght@300&display=swap");
-html { background-color: #58a448; }
+html { font-family: 'Lato', sans-serif; }
 
-body { margin: 0 10vw; font-family: 'Lato', sans-serif; background-color: white; padding: 5vw; }
+body { margin: 0; }
+
+main { margin: 0 10vw; background-color: white; padding: 5vw; }
 
 /* width */
 ::-webkit-scrollbar { width: 20px; }
@@ -15,22 +17,34 @@ body { margin: 0 10vw; font-family: 'Lato', sans-serif; background-color: white;
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; color: #1e271d; margin-left: -7vw; background-color: #44a57c; box-shadow: 6px 6px 0px 0px #cec917, -3px -3px 0px 3px white; padding: 5px; }
+h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; color: #1e271d; background-color: #44a57c; box-shadow: 6px 6px 0px 0px #cec917, -3px -3px 0px 3px white; padding: 5px; }
+
+p, table, ol, ul { margin-top: 25px; margin-bottom: 25px; }
 
 code { background-color: #1e271d; color: #cec917; }
 
-table { margin: 0 auto; border: 1px solid #1e271d; box-shadow: 6px 6px 0px 0px #1e271d; }
+table { margin: 0 auto; border: 1px solid #1e271d; box-shadow: 6px 6px 0px 0px #1e271d; background-color: #1e271d; }
 
 thead { background-color: #44a57c; display: table-header-group; vertical-align: middle; border-color: inherit; border-inline: 1px dashed #1e271d; }
 
 tr { display: table-row; vertical-align: inherit; border-color: inherit; }
 
-tr:nth-child(even) { background-color: #eaeaea; color: black; }
+tbody tr:nth-child(even) { background-color: #eaeaea; color: #1e271d; }
+
+tbody tr:nth-child(odd) { background-color: #ffffff; color: #1e271d; }
 
 th, td { padding: 5px; }
 
 .current { color: #819a7a; }
 
 div.highlight { text-overflow: ellipsis; overflow: scroll; background-color: #1e271d; color: #58a448; font-family: 'monospace'; padding: 5px 13px 5px 10px; }
+
+.topbottom, .topbottom-div { display: flex; flex-direction: row; flex-wrap: nowrap; align-content: center; align-items: center; justify-content: center; width: 100%; }
+
+.topbottom-div { height: 100px; background: #1e271d; width: 100%; }
+
+.topbottom-link { text-decoration: none; font-size: xx-large; color: #cec917; }
+
+footer { position: absolute; left: 0; right: 0; }
 
 /*# sourceMappingURL=styles.css.map */
