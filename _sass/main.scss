@@ -1,3 +1,99 @@
+$pal-1: #1e271d;
+$pal-2: #274637;
+$pal-3: #2b725f;
+$pal-4: #44a57c;
+$pal-5: #819a7a;
+$pal-6: #58a448;
+$pal-7: #cec917;
+
+$pal-8: rgb(76, 175, 80);
+
+html {
+  background-color: $pal-6;
+}
+
+body {
+  margin: 0 10vw;
+  font-family: 'Lato', sans-serif;
+  background-color: white;
+  padding: 5vw;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: 'Sora', sans-serif;
+  color: $pal-1;
+  margin-left: -7vw;
+  background-color: $pal-4;
+  box-shadow: 6px 6px 0px 0px $pal-7, -3px -3px 0px 3px white;
+  padding: 5px;
+}
+
+code {
+  background-color: $pal-1;
+  color: $pal-7;
+  // margin: 5px;
+}
+
+table {
+  margin: 0 auto;
+  border: 1px solid $pal-1;
+  box-shadow: 6px 6px 0px 0px $pal-1;
+}
+
+thead {
+  background-color: $pal-4;
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+  border-inline: 1px dashed $pal-1;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+tr:nth-child(even) {
+  background-color: #eaeaea;
+  color: black;
+}
+
+th, td {
+  padding: 5px;
+}
+
 .current {
-    color: green;
-  }
+  color: $pal-5;
+}
+
+div.highlight {
+  text-overflow: ellipsis;
+  overflow: scroll;
+  background-color: $pal-1;
+  color: $pal-6;
+  font-family: 'monospace';
+  padding: 5px 13px 5px 10px;
+}
+
+

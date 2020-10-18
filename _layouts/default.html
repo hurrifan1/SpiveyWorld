@@ -2,14 +2,20 @@
 ---
 <!doctype html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>{{ page.title }}</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
     {% seo %}
-  </head>
-  <body>
+</head>
+
+<header>
     {% include navigation.html %}
+</header>
+
+<body>
     {{ content }}
-  </body>
+</body>
+
 </html>
