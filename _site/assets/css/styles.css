@@ -1,7 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato&family=Sora:wght@300&display=swap");
-html { font-family: 'Lato', sans-serif; }
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Lato&family=Sora:wght@300&display=swap");
+html { font-family: 'Lato', sans-serif; letter-spacing: 0.8px; }
 
 body { margin: 0; }
+
+a { color: lightpink; }
 
 main { margin: 0 10vw; background-color: white; padding: 5vw; }
 
@@ -19,9 +21,7 @@ main { margin: 0 10vw; background-color: white; padding: 5vw; }
 
 h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; color: #1e271d; background-color: #44a57c; box-shadow: 6px 6px 0px 0px #cec917, -3px -3px 0px 3px white; padding: 5px; }
 
-p, table, ol, ul { margin-top: 25px; margin-bottom: 25px; }
-
-code { background-color: #1e271d; color: #cec917; }
+p, table, ol, ul { margin-top: 25px; margin-bottom: 25px; line-height: 1.5em; }
 
 table { margin: 0 auto; border: 1px solid #1e271d; box-shadow: 6px 6px 0px 0px #1e271d; background-color: #1e271d; }
 
@@ -37,7 +37,11 @@ th, td { padding: 5px; }
 
 .current { color: #819a7a; }
 
-div.highlight { text-overflow: ellipsis; overflow: scroll; background-color: #1e271d; color: #58a448; font-family: 'monospace'; padding: 5px 13px 5px 10px; }
+code { padding: 0 2px; }
+
+code, div.highlight { background-color: #1e271d; color: #cec917; font-family: monospace; font-size: 16px; }
+
+div.highlight { text-overflow: ellipsis; overflow: scroll; padding: 5px 13px 5px 10px; }
 
 .topbottom, .topbottom-div { display: flex; flex-direction: row; flex-wrap: nowrap; align-content: center; align-items: center; justify-content: center; width: 100%; }
 
@@ -46,5 +50,17 @@ div.highlight { text-overflow: ellipsis; overflow: scroll; background-color: #1e
 .topbottom-link { text-decoration: none; font-size: xx-large; color: #cec917; }
 
 footer { position: absolute; left: 0; right: 0; }
+
+.tag { display: inline-block; line-height: 1.5em; background-color: rgba(255, 127, 80, 0.5); padding: 1px 7px 1px 3px; border-radius: 10px 10px 10px 10px; margin: 0 2px; font-family: 'Cairo', sans-serif; font-size: 1.1em; box-shadow: none; text-shadow: none; transform: translate(0, 0); }
+
+.tag:hover { box-shadow: 1px 0px 0px 0px darkgrey, 2px 0px 0px 0px black; cursor: pointer; transition: box-shadow 0.2s ease-out, text-shadow 0.2s ease-in-out, transform 0.2s ease-out; }
+
+.inner-tag { display: inline-block; }
+
+.tag .inner-tag { transform: none; transition: transform 0.2s ease-out, letter-spacing 0.2s ease-out; }
+
+.tag:hover .inner-tag { transform: translate(0px, 0px); letter-spacing: 1.2px; }
+
+.unselectable { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
 
 /*# sourceMappingURL=styles.css.map */

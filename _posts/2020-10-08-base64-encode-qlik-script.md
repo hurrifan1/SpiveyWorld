@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Encoding strings in Base64 using Qlik script
+category: Qlik Sense
+tags: Scripting Qlik-Sense
 ---
 I recently had a project requirement that involved needing to encode a few strings in Base64 to be sent over a REST API call. As happens often during projects, I was able to find a different solution that precluded the need for lots of Qlik script...but I had already started, so I just went ahead and finished it!
 

@@ -2,6 +2,9 @@
 layout: default
 ---
 <h1>{{ page.title }}</h1>
-<p>{{ page.date | date_to_string }}</p>
+<p>{{ page.date | date_to_string }} - Filed under <b>{{ page.categories }}</b> with tags {% for tag in page.tags %}
+        <span class="tag unselectable"><span class="inner-tag"><i>{{ tag  | replace: "-"," " }}</i></span></span>
+    {% endfor %}
+</p>
 
 {{ content }}
