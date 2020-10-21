@@ -1,11 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Lato&family=Sora:wght@300&display=swap");
 html { font-family: 'Lato', sans-serif; letter-spacing: 0.8px; }
 
+.page-container { position: relative; min-height: 100vh; }
+
 body { margin: 0; }
 
-a { color: lightpink; }
+a { color: #ffeb3b; }
 
-main { margin: 0 10vw; background-color: white; padding: 5vw; }
+main { margin: 0 10vw; background-color: white; padding: 2vh 15vw 17vh 15vh; }
 
 /* width */
 ::-webkit-scrollbar { width: 20px; }
@@ -37,7 +39,9 @@ th, td { padding: 5px; }
 
 .current { color: #819a7a; }
 
-code { padding: 0 2px; }
+code { padding: 2px 3px; }
+
+div.highlight code { padding: 0; }
 
 code, div.highlight { background-color: #1e271d; color: #cec917; font-family: monospace; font-size: 16px; }
 
@@ -45,11 +49,11 @@ div.highlight { text-overflow: ellipsis; overflow: scroll; padding: 5px 13px 5px
 
 .topbottom, .topbottom-div { display: flex; flex-direction: row; flex-wrap: nowrap; align-content: center; align-items: center; justify-content: center; width: 100%; }
 
-.topbottom-div { height: 100px; background: #1e271d; width: 100%; }
+.topbottom-div { height: 100px; background: #002305; width: 100%; }
 
 .topbottom-link { text-decoration: none; font-size: xx-large; color: #cec917; }
 
-footer { position: absolute; left: 0; right: 0; }
+footer { position: absolute; width: 100%; bottom: 0; left: 0; right: 0; }
 
 .tag { display: inline-block; line-height: 1.5em; background-color: rgba(255, 127, 80, 0.5); padding: 1px 7px 1px 3px; border-radius: 10px 10px 10px 10px; margin: 0 2px; font-family: 'Cairo', sans-serif; font-size: 1.1em; box-shadow: none; text-shadow: none; transform: translate(0, 0); }
 
@@ -62,5 +66,11 @@ footer { position: absolute; left: 0; right: 0; }
 .tag:hover .inner-tag { transform: translate(0px, 0px); letter-spacing: 1.2px; }
 
 .unselectable { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+
+.skills-container { display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-evenly; align-items: stretch; }
+
+.skills-box { display: block; width: 200px; text-align: center; cursor: pointer; }
+
+.skills-logo { height: 100px; width: auto; }
 
 /*# sourceMappingURL=styles.css.map */

@@ -14,18 +14,23 @@ html {
   letter-spacing: 0.8px;
 }
 
+.page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
 body {
   margin: 0;
 }
 
 a {
-  color: lightpink;
+  color: #ffeb3b;
 }
 
 main {
   margin: 0 10vw;
   background-color: white;
-  padding: 5vw;
+  padding: 2vh 15vw 17vh 15vh;
 }
 
 /* width */
@@ -103,7 +108,11 @@ th, td {
 }
 
 code {
-  padding: 0 2px;
+  padding: 2px 3px;
+}
+
+div.highlight code{
+  padding: 0;
 }
 
 code, div.highlight {
@@ -132,7 +141,7 @@ div.highlight {
 .topbottom-div {
   height: 100px;
   // border: 2px solid red;
-  background: $pal-1;
+  background: #002305;
   width: 100%;
 }
 
@@ -144,7 +153,8 @@ div.highlight {
 
 footer {
   position: absolute;
-  // bottom: 0;
+  width: 100%;
+  bottom: 0;
   left: 0;
   right: 0;
 }
@@ -195,4 +205,25 @@ footer {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.skills-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: stretch;
+}
+
+.skills-box {
+  display: block;
+  width: 200px;
+  // border: 1px solid red;
+  text-align: center;
+  cursor: pointer;
+}
+
+.skills-logo {
+  height: 100px;
+  width: auto;
 }

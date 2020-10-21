@@ -1,0 +1,13 @@
+I"L<p>The more I use Qlik Sense, the more I realize that the real power of it comes from the use of its APIs under the hood. While the QMC is a powerful admin console, the ability to write programs using the Qlik Sense API can push the boundaries of what’s possible with Qlik. I recently had a project where I needed to save all of the apps and data connections in a client’s environment so that we could un- and then re-install Qlik to complete a network update.</p>
+
+<h2 id="make-and-confirm-connection-to-the-tenant">Make and confirm connection to the tenant</h2>
+<p>Script:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">qlik</span><span class="w"> </span><span class="nx">status</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">Connected</span><span class="w"> </span><span class="nx">without</span><span class="w"> </span><span class="nx">app</span><span class="w"> </span><span class="nx">to</span><span class="w">  </span><span class="nx">https://ccg.us.qlikcloud.com/api/</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="f">f</h2>
+:ET
