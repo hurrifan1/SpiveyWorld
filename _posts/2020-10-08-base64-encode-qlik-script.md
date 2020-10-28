@@ -222,7 +222,7 @@ You'll notice that you have to wrap your string with double-quotes -- this is to
 
 ## Final thoughts
 
-And there ya go! This script will encoded a string in Base64. It was hard to figure out, as I didn't anticipate how much math would go into it. Someone who knows binary math and/or Qlik script better than I do can probably find a ton of ways to make this more efficient but certainly gets the job done!
+And there ya go! This script will encode a string in Base64. It was hard to figure out, as I didn't anticipate how much math would go into it. Someone who knows binary math and/or Qlik script better than I do can probably find a ton of ways to make this more efficient but certainly gets the job done!
 
 ### Notes
 I used several excellent resources to help me muscle through this one. Those are linked below:

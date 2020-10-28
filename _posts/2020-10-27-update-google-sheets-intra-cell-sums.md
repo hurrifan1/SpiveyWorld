@@ -25,7 +25,7 @@ Here's the formula written out:
 =ArrayFormula(Sum(Split(RegexReplace(A1, "[^,0-9]+", ""), ",")))
 ```
 
-And here's the forumla broken out:
+And here's the formula broken out:
 
 ```
 =ArrayFormula(                                                          )
