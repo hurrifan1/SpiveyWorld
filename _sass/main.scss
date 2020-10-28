@@ -3,8 +3,8 @@ $pal-2: #274637;   /* - */
 $pal-3: #2b725f;   /* - */
 $pal-4: #f59a5a;   /* Header background | Table header */
 $pal-5: #819a7a;   /* - */
-$pal-6: #58a448;   /* - */
-$pal-7: #299c68;   /* Code | Header nav links | Header box shadow */
+$pal-6: #58a448;   /* Code */
+$pal-7: #17774c;   /* Header nav links | Header box shadow | old: 299c68 */
 $pal-8: white;     /* Header links */
 $pal-9: #3bb5ff;   /* Links */
 $pal-10: #ffa8c6;  /* Link box shadow | Header nav headshot drop shadow */
@@ -46,6 +46,14 @@ a:hover {
   // text-shadow: 0px 1px 1px white;
 
   transition: box-shadow 0.1s ease-out, text-shadow 0.1s ease-out;
+}
+
+a.topbottom-link, a.header-link {
+  box-shadow: inset 0px -2px 0 0px $pal-9;
+}
+
+a.topbottom-link:hover, a.header-link:hover {
+  box-shadow: inset 0px -6px 0 0px $pal-9;
 }
 
 .header-link, .footer-link {
@@ -196,7 +204,7 @@ div.highlight code{
 
 code, div.highlight {
   background-color: $pal-1;
-  color: $pal-7;
+  color: $pal-6;
   font-family: monospace;
   font-size: 16px;
 }
