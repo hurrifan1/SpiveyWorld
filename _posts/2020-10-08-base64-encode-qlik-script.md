@@ -127,24 +127,24 @@ SUB Base64Encode (string)
 ...
 ...
     
-    base_full_binary:
-    LOAD *
-/* 6 */  , RowNo() as base_Binary_Index
-/* 5 */  , Mid('$(vbase_Base64Chars)', base_Base64_Index + 1, 1) as base_Base64_Character
-    ;
-    LOAD *
-/* 4 */  , num(num#(base_New_Bit_Pattern, '(BIN)')) as base_Base64_Index
-    ;
-    LOAD *
-/* 3 */  , mid(base_Full_Binary, ( ( IterNo() - 1 ) * 6 ) + 1, 6) as base_New_Bit_Pattern
-    WHILE IterNo() <= Div( len(base_Full_Binary) , 6)
-    ;
-    LOAD *
-/* 2 */  , text( base_Full_Binary_No_Pad & Repeat(0, num#(Frac(Fabs((Mod(len(base_Full_Binary_No_Pad), 24) - 24) / 6)) * 6) ) ) as base_Full_Binary
-    ;
-    LOAD
-/* 1 */  text( Concat(base_Binary, '', base_Character_Number) ) as base_Full_Binary_No_Pad
-    Resident base_string_table_a;
+        base_full_binary:
+        LOAD *
+/* 6 */    , RowNo() as base_Binary_Index
+/* 5 */    , Mid('$(vbase_Base64Chars)', base_Base64_Index + 1, 1) as base_Base64_Character
+        ;
+        LOAD *
+/* 4 */    , num(num#(base_New_Bit_Pattern, '(BIN)')) as base_Base64_Index
+        ;
+        LOAD *
+/* 3 */    , mid(base_Full_Binary, ( ( IterNo() - 1 ) * 6 ) + 1, 6) as base_New_Bit_Pattern
+        WHILE IterNo() <= Div( len(base_Full_Binary) , 6)
+        ;
+        LOAD *
+/* 2 */    , text( base_Full_Binary_No_Pad & Repeat(0, num#(Frac(Fabs((Mod(len(base_Full_Binary_No_Pad), 24) - 24) / 6)) * 6) ) ) as base_Full_Binary
+        ;
+        LOAD
+/* 1 */      text( Concat(base_Binary, '', base_Character_Number) ) as base_Full_Binary_No_Pad
+        Resident base_string_table_a;
 
 END SUB
 ```
