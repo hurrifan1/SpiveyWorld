@@ -10,7 +10,7 @@
 /test/version_tmp/
 /tmp/
 
-/Non-site docs/
+Non-site docs/
 
 # Used by dotenv library to load environment variables.
 # .env
