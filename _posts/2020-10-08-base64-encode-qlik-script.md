@@ -11,9 +11,10 @@ Below, I go through the process of writing some Qlik script to encode strings in
 ## Step 1. What the hell is Base64?
 Yeah, I didn't know before this project. Is it encryption? Is it a way to convert between character encodings?
 
-Turns out, it's _basically_ a way to get from binary data to textual data, and vice versa, for the purpose of transferring information. That's no doubt a horrendous over-simplification, perhaps to the point of being a bit wrong, but it's near enough for the purposes of this post.
+Turns out, it's 
+_basically_ a way to get from binary data to textual data, and vice versa, for the purpose of transferring information. That's no doubt a horrendous over-simplification, perhaps to the point of being a bit wrong, but it's near enough for the purposes of this post.
 
-## Step 2. Determine the game plan
+### Step 2. Determine the game plan
 Here's what I needed my script to do:
 
 1. Take any string (i.e. "Qlik").

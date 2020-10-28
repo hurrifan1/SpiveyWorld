@@ -1,0 +1,150 @@
+I"<p>If this pandemic has done anything to me, it’s made me want to travel a <strong>lot</strong> more than I ever have before. These past few months of restlessness culminated in a trip to Yosemite and Joshua Tree National Parks in California with a few friends, a repreive that allowed for a socially-distanced adventure and a pinch of serenity during a period of our lives that is anyting but.</p>
+
+<p>Planning the trip required an indispensible tool for collaboratively creating our itinerary: Google Sheets, a trusty mainstay of I’m-not-fuckin-paying-for-Office-365 web tool aficionados.</p>
+
+<h2 id="the-problem">The Problem</h2>
+<p>While building out our itinerary in Google Sheets, I wanted to sum up the cost estimates for each leg of the journey (each leg occupied a row in the sheet), but I didn’t want to break out each expense item on individual rows in a new sheet – I just wanted to use a sum formula <em>within</em> a single cell, where I’d have all my expenses, like so:</p>
+
+<p><img src="assets/img/2020-10-27-update-google-sheets-intra-cell-sums-screenshot-1.png" alt="Screenshot of the problem cell" /></p>
+
+<p>Turns out, you can’t just use the <code class="language-plaintext highlighter-rouge">Sum()</code> formula to sum up numbers in a single cell. But after activating the a few neglected ridges in my brain, I have a solution…</p>
+
+<h2 id="the-solution">The Solution</h2>
+<p>I ended up with a formula that can be tweaked to accomodate finding numbers in your cell after stripping out characters that match a particular pattern:</p>
+
+<p><em>screenshot of the sheet setup, like this quaint fellow:</em><br />
+<code class="language-plaintext highlighter-rouge">=ArrayFormula(Sum(Split(RegexReplace(A1, "[^,0-9]+", ""), ",")))</code></p>
+
+<p>Here’s the forumla broken out:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>=ArrayFormula(                                                          )
+               Sum(                                                   )
+                    Split(                                    , "," )
+                           RegexReplace( A1, "[^,0-9]+", "" )
+</code></pre></div></div>
+
+<p>Here’s an explainer for each function and a link to the docs:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ArrayFormula()</code>
+    <ul>
+      <li>This function is being used to here because we need to use the <code class="language-plaintext highlighter-rouge">Sum()</code> function over the array of numbers that result from the use of the <code class="language-plaintext highlighter-rouge">Split()</code> function, described below.</li>
+      <li><a href="https://support.google.com/docs/answer/3093275?hl=en">Docs</a></li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">Sum()</code>
+    <ul>
+      <li>This function will sum all of the numbers that we find in the cell after removing non-numbers that match a pattern we specify using the <code class="language-plaintext highlighter-rouge">RegexReplace()</code> function, described below.</li>
+      <li><a href="https://support.google.com/docs/answer/3093669?hl=en">Docs</a></li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">Split()</code>
+    <ul>
+      <li>This function will split the cell’s numbers into an array, which would <em>normally</em> result in the numbers being split into new cells, but the <code class="language-plaintext highlighter-rouge">ArrayFormula()</code> function will allow us to use the <code class="language-plaintext highlighter-rouge">Sum()</code> function to get a <strong>single result</strong> rather than <strong>multiple new cells</strong>.</li>
+      <li>The function, as I wrote it, will split out the numbers wherever there is a comma.</li>
+      <li><a href="https://support.google.com/docs/answer/3094136?hl=en">Docs</a></li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">RegexReplace()</code>
+    <ul>
+      <li>This function uses <a href="https://www.oreilly.com/library/view/introducing-regular-expressions/9781449338879/ch01.html">regular expressions</a> to narrow in on the non-numbers that we don’t want/cannot sum up and then gets rid of them.</li>
+      <li>This function basically says “find any characters that aren’t numbers or commas and replace them with nothing.”</li>
+      <li><a href="https://support.google.com/docs/answer/3098245?hl=en">Docs</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p>So, using our example from above, this is what is happening:</p>
+
+<p>Our original cell value:<br />
+|                    A1                    |
+|:—————————————-:|
+| ONE WAY: Jason ($140), Owen ($157) + BAG |</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">REGEXREPLACE(A1, "[^,0-9]+", "")</code>
+    <ul>
+      <li>“Replace all the characters that aren’t numbers or commas and replace them with nothing.”</li>
+      <li><strong>What it changes:</strong></li>
+    </ul>
+  </li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">A1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><del>ONE WAY: Jason ($</del>140<del>)</del>,<del>Owen ($</del>157<del>) + BAG</del></td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><strong>Result:</strong></li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">A1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">140,157</td>
+    </tr>
+  </tbody>
+</table>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">Split( ... , ",")</code>
+    <ul>
+      <li>“Split the cell’s numbers into a comma-separated array.”</li>
+      <li><strong>Result:</strong></li>
+    </ul>
+  </li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">A1</th>
+      <th style="text-align: center">A2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">140</td>
+      <td style="text-align: center">157</td>
+    </tr>
+  </tbody>
+</table>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">ArrayFormula( Sum( ... ) )</code>
+    <ul>
+      <li>“Sum the cells in the array created by the <code class="language-plaintext highlighter-rouge">Split()</code> function.”</li>
+      <li><strong>Result:</strong></li>
+    </ul>
+  </li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">A1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">297</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+<p>Damn, I’m glad this worked.</p>
+:ET

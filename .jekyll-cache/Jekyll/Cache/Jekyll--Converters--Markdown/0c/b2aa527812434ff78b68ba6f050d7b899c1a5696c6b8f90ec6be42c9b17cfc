@@ -1,0 +1,377 @@
+I"sC<p>I recently had a project requirement that involved needing to encode a few strings in Base64 to be sent over a REST API call. As happens often during projects, I was able to find a different solution that precluded the need for lots of Qlik script…but I had already started, so I just went ahead and finished it!</p>
+
+<p>Below, I go through the process of writing some Qlik script to encode strings in Base64.</p>
+
+<h2 id="step-1-what-the-hell-is-base64">Step 1. What the hell is Base64?</h2>
+<p>Yeah, I didn’t know before this project. Is it encryption? Is it a way to convert between character encodings?</p>
+
+<p>Turns out, it’s 
+<em>basically</em> a way to get from binary data to textual data, and vice versa, for the purpose of transferring information. That’s no doubt a horrendous over-simplification, perhaps to the point of being a bit wrong, but it’s near enough for the purposes of this post.</p>
+
+<h3 id="step-2-determine-the-game-plan">Step 2. Determine the game plan</h3>
+<p>Here’s what I needed my script to do:</p>
+
+<ol>
+  <li>Take any string (i.e. “Qlik”).</li>
+  <li>Convert each character to their ASCII index.</li>
+  <li>Convert those ASCII index values to <del>binary</del> <em>(turns out, “bit pattern” is the more apt term here)</em>. Note that these are octets, or groups of 8 bits.</li>
+</ol>
+
+<p>Here’s a table to illustrate what we have so far:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Q</th>
+      <th style="text-align: center">l</th>
+      <th style="text-align: center">i</th>
+      <th style="text-align: center">k</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">81</td>
+      <td style="text-align: center">108</td>
+      <td style="text-align: center">105</td>
+      <td style="text-align: center">107</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">01010001</td>
+      <td style="text-align: center">01101100</td>
+      <td style="text-align: center">01101001</td>
+      <td style="text-align: center">01101011</td>
+    </tr>
+  </tbody>
+</table>
+
+<ol>
+  <li>Combine those bits and then separate them into 24-bit sequences.</li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">24 bits</th>
+      <th style="text-align: center"><del>24 bits</del> 8 bits</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">010100010110110001101001</td>
+      <td style="text-align: center">01101011</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Notice that with our string “Qlik”, we end up with a group of bits that don’t fit into a 24-bit sequence – in this case, we have 8 leftover. What we’ll do is add zeroes to the end of that octet, which will ultimately be converted to a padding character, = (equal sign):</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">24 bits</th>
+      <th style="text-align: center">24 bits</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">010100010110110001101001</td>
+      <td style="text-align: center">011010110000000000000000</td>
+    </tr>
+  </tbody>
+</table>
+
+<ol>
+  <li>Then, split those groups into sextets, or groups of six.</li>
+  <li>Those sextets are then converted to an index that will return a Base64 character.</li>
+</ol>
+
+<p>When using our above example, the first 6 bits in our 24-bit sequence are 010100. This converts to the number 20. So we now must go to that index in this string of Base64 characters:
+<code class="language-plaintext highlighter-rouge">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/</code></p>
+
+<p>Doing so will return the character U:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 .....
+A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z  a  b  c  d  e  f  .....
+                                                            ^
+                                                        Index 20
+                                                     (0-based index)
+</code></pre></div></div>
+
+<p>Here’s where we are in our example:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">010100</th>
+      <th style="text-align: center">010110</th>
+      <th style="text-align: center">110001</th>
+      <th style="text-align: center">101001</th>
+      <th style="text-align: center">011010</th>
+      <th style="text-align: center">110000</th>
+      <th style="text-align: center">000000</th>
+      <th style="text-align: center">000000</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">20</td>
+      <td style="text-align: center">22</td>
+      <td style="text-align: center">49</td>
+      <td style="text-align: center">41</td>
+      <td style="text-align: center">26</td>
+      <td style="text-align: center">48</td>
+      <td style="text-align: center">pad</td>
+      <td style="text-align: center">pad</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">U</td>
+      <td style="text-align: center">W</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">p</td>
+      <td style="text-align: center">a</td>
+      <td style="text-align: center">w</td>
+      <td style="text-align: center">=</td>
+      <td style="text-align: center">=</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Note that a bit pattern of 000000 would normally be the index for the chartacter A but in this case, since we added – or padded – the end with these zeroes, they’re converted to the padding character, =.</p>
+
+<h2 id="step-3-script-it-out-in-qlik">Step 3. Script it out in Qlik</h2>
+<p>Now time for the tricky part.</p>
+
+<p>The basic thing I’ll aim for is this:</p>
+<ul>
+  <li>Write a subroutine that will:
+    <ul>
+      <li>Take a string argument;</li>
+      <li>Base64 encode the string;</li>
+      <li>Set the encoded string to a variable.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Let’s start with this script here:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUB Base64Encode (string)
+
+    Let vbase_String = '$(string)';
+    Let vbase_Base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    Let vbase_QuotePad = 1;
+
+    Trace #### Our string = $(vbase_String);
+
+END SUB
+</code></pre></div></div>
+
+<p>This sets up our subroutine along with a few variables:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">vbase_String</code> - Takes the subroutine argument value.</li>
+  <li><code class="language-plaintext highlighter-rouge">vbase_Base64Chars</code> - Holds the Base64 characters.</li>
+  <li><code class="language-plaintext highlighter-rouge">vbase_QuotePad</code> - This variable is basically here to allow for future functionality; its current purpose is to allow for double-quotes around the provided string so that Qlik can read tricky characters like quotes “ “ and semicolons ;.</li>
+</ul>
+
+<p>We also have a TRACE in there just to confirm in the script output that our string was picked up correctly.</p>
+
+<p>Now we’ll generate a table where we have:</p>
+<ul>
+  <li>A field for each character in our string;</li>
+  <li>A field for keeping track of the order of the characters;</li>
+  <li>and a field for tracking the byte in base 2 (binary!).</li>
+</ul>
+
+<p>Here’s the script for that:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUB Base64Encode (string)
+...
+
+base_string_table_a:
+    LOAD *
+      , RowNo() as base_Character_Number
+      , text(repeat(0, 8 - len(num(ord(base_Character), '(BIN)'))) &amp; num(ord(base_Character), '(BIN)')) as base_Binary
+    ;
+    LOAD
+        Mid( mid('$(vbase_String)', 1+$(vbase_QuotePad), len('$(vbase_String)')-($(vbase_QuotePad)*2)),  IterNo(),  1 ) as base_Character
+    AutoGenerate 1 While IterNo() &lt;= len('$(vbase_String)')-($(vbase_QuotePad)*2);
+    
+END SUB
+</code></pre></div></div>
+
+<p>Above, we used AutoGenerate with IterNo() and Mid() to parse each character into a separate row (field <code class="language-plaintext highlighter-rouge">[base_Binary]</code>). Then we have a preceding load that keeps track of the character order (field <code class="language-plaintext highlighter-rouge">[base_Character_Number]</code>) and converts the ASCII indices of the characters to binary octets, making sure to add zeroes to the beginning to ensure 8 bits, as Qlik will otherwise strip those zeroes (field <code class="language-plaintext highlighter-rouge">[base_Binary]</code>).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUB Base64Encode (string)
+...
+...
+    
+    base_full_binary:
+    LOAD *
+/* 6 */  , RowNo() as base_Binary_Index
+/* 5 */  , Mid('$(vbase_Base64Chars)', base_Base64_Index + 1, 1) as base_Base64_Character
+    ;
+    LOAD *
+/* 4 */  , num(num#(base_New_Bit_Pattern, '(BIN)')) as base_Base64_Index
+    ;
+    LOAD *
+/* 3 */  , mid(base_Full_Binary, ( ( IterNo() - 1 ) * 6 ) + 1, 6) as base_New_Bit_Pattern
+    WHILE IterNo() &lt;= Div( len(base_Full_Binary) , 6)
+    ;
+    LOAD *
+/* 2 */  , text( base_Full_Binary_No_Pad &amp; Repeat(0, num#(Frac(Fabs((Mod(len(base_Full_Binary_No_Pad), 24) - 24) / 6)) * 6) ) ) as base_Full_Binary
+    ;
+    LOAD
+/* 1 */  text( Concat(base_Binary, '', base_Character_Number) ) as base_Full_Binary_No_Pad
+    Resident base_string_table_a;
+
+END SUB
+</code></pre></div></div>
+
+<p>So there’s a lot going on here. I’ve added some numbers <code class="language-plaintext highlighter-rouge">/* # */</code> in the script to help you follow along:</p>
+<ol>
+  <li>This loads a new table by residenting the table created in the script section we discussed above. This line concatenates all of the binary octets from the previous section (results in field <code class="language-plaintext highlighter-rouge">[base_Full_Binary_No_Pad]</code>).</li>
+  <li>This preceding load adds the field <code class="language-plaintext highlighter-rouge">[base_Full_Binary]</code>, which adds enough zeroes to the end of our concatenated binary string to complete the last sextet, which we’ll be creating in the next step (we’ll add the padding in a later step).</li>
+  <li>This script adds a new field, <code class="language-plaintext highlighter-rouge">[base_New_Bit_Pattern]</code>, that breaks out the binary string into sextets, or groups of 6.</li>
+  <li>This line converts those sextets into a number (resulting in field <code class="language-plaintext highlighter-rouge">[base_Base64_Index]</code>).</li>
+  <li>This line uses the <code class="language-plaintext highlighter-rouge">[base_Base64_Index]</code> field as an index to pull the Base64 character from the <code class="language-plaintext highlighter-rouge">vbase_Base64Chars</code> variable we created at the start (results in field <code class="language-plaintext highlighter-rouge">[base_Base64_Character]</code>).</li>
+  <li>Finally, this line adds the field <code class="language-plaintext highlighter-rouge">[base_Binary_Index]</code>, which provides a row number the we can use to keep these characters in order.</li>
+</ol>
+
+<p>Now we’re ready to put our Base64 encoded string together and add the padding character, if needed:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUB Base64Encode (string)
+...
+...
+...
+    
+    let vbase_Len1 = len(peek('base_Full_Binary', 0, 'base_full_binary'));
+    let vbase_Len2 = len(peek('base_Full_Binary_No_Pad', 0, 'base_full_binary'));
+
+
+    base_Base64_Encoded:
+    LOAD
+        Concat(base_Base64_Character, '', base_Binary_Index) &amp; repeat('=', div( 24 - mod($(vbase_Len2), 25) - num#(Frac(Fabs((Mod($(vbase_Len2), 24) - 24) / 6)) * 6) , 6) ) as base_Base64_Encoded_String
+    Resident base_full_binary;
+
+
+    Let vBase64String = peek('base_Base64_Encoded_String', 0, 'base_Base64_Encoded');
+
+END SUB
+</code></pre></div></div>
+
+<p>We first created two new variables:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">vbase_Len1</code> - The length of the binary string after we added any needed extra zeroes to complete the last sextet.</li>
+  <li><code class="language-plaintext highlighter-rouge">vbase_Len2</code> - The length of the binary string before we had done that step mentioned above.</li>
+</ul>
+
+<p>Then, we resident the previous table and create a new field, <code class="language-plaintext highlighter-rouge">[base_Base64_Encoded_String]</code>, by concatenating our Base64 encoded characters from the field <code class="language-plaintext highlighter-rouge">[base_Base64_Character]</code> and then adding the padding characters we need so that we keep with our 24-bit sequence length.</p>
+
+<p>We now have our Base64 encoded string! We create a variable, <code class="language-plaintext highlighter-rouge">vBase64String</code>, to hold that string.</p>
+
+<p>The final step is simply some housekeeping:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUB Base64Encode (string)
+...
+...
+...
+...
+
+    Trace #### Encoded string available from the vBase64String variable!;
+
+    Drop Tables [base_Base64_Encoded], [base_full_binary], [base_string_table_a];
+    Let vbase_String = Null();
+    Let vbase_Base64Chars = Null();
+    Let vbase_Len1 = Null();
+    Let vbase_Len2 = Null();
+
+END SUB
+</code></pre></div></div>
+
+<p>This script simply adds a TRACE to confirm that this all worked and then drops our tables and nullifies our helper variables.</p>
+
+<p>You can now use this subroutine as such:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Let string = '"' &amp; 'Place your string here!' &amp; '"';
+
+Call Base64Encode ('$(string)')
+</code></pre></div></div>
+
+<p>You’ll notice that you have to wrap your string with double-quotes – this is to ensure that Qlik can parse out Qlik-specific characters, like semicolons and quotes/double-quotes.</p>
+
+<h2 id="final-thoughts">Final thoughts</h2>
+
+<p>And there ya go! This script will encoded a string in Base64. It was hard to figure out, as I didn’t anticipate how much math would go into it. Someone who knows binary math and/or Qlik script better than I do can probably find a ton of ways to make this more efficient but certainly gets the job done!</p>
+
+<h3 id="notes">Notes</h3>
+<p>I used several excellent resources to help me muscle through this one. Those are linked below:</p>
+<ul>
+  <li><a href="https://www.base64encode.org/">base64encode.org</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Base64">Good ol’ Wikipedia</a></li>
+</ul>
+
+<h2 id="full-script">Full script</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUB Base64Encode (string)
+
+    Let vbase_String = '$(string)';
+    Let vbase_Base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    Let vbase_QuotePad = 1;
+
+    Trace #### Our string = $(vbase_String);
+ 
+
+    // ####################################################################
+
+
+    base_string_table_a:
+    LOAD *
+      , RowNo() as base_Character_Number
+      , text(repeat(0, 8 - len(num(ord(base_Character), '(BIN)'))) &amp; num(ord(base_Character), '(BIN)')) as base_Binary
+    ;
+    LOAD
+        Mid( mid('$(vbase_String)', 1+$(vbase_QuotePad), len('$(vbase_String)')-($(vbase_QuotePad)*2)),  IterNo(),  1 ) as base_Character
+    AutoGenerate 1 While IterNo() &lt;= len('$(vbase_String)')-($(vbase_QuotePad)*2);
+
+
+    base_full_binary:
+    LOAD *
+      , RowNo() as base_Binary_Index
+      , Mid('$(vbase_Base64Chars)', base_Base64_Index + 1, 1) as base_Base64_Character
+    ;
+    LOAD *
+      , num(num#(base_New_Bit_Pattern, '(BIN)')) as base_Base64_Index
+    ;
+    LOAD *
+      , mid(base_Full_Binary, ( ( IterNo() - 1 ) * 6 ) + 1, 6) as base_New_Bit_Pattern
+    WHILE IterNo() &lt;= Div( len(base_Full_Binary) , 6)
+    ;
+    LOAD *
+      , text( base_Full_Binary_No_Pad &amp; Repeat(0, num#(Frac(Fabs((Mod(len(base_Full_Binary_No_Pad), 24) - 24) / 6)) * 6) ) ) as base_Full_Binary
+    ;
+    LOAD
+        text( Concat(base_Binary, '', base_Character_Number) ) as base_Full_Binary_No_Pad
+    Resident base_string_table_a;
+
+
+    let vbase_Len1 = len(peek('base_Full_Binary', 0, 'base_full_binary'));
+    let vbase_Len2 = len(peek('base_Full_Binary_No_Pad', 0, 'base_full_binary'));
+
+
+    base_Base64_Encoded:
+    LOAD
+        Concat(base_Base64_Character, '', base_Binary_Index) &amp; repeat('=', div( 24 - mod($(vbase_Len2), 25) - num#(Frac(Fabs((Mod($(vbase_Len2), 24) - 24) / 6)) * 6) , 6) ) as base_Base64_Encoded_String
+    Resident base_full_binary;
+
+
+    Let vBase64String = peek('base_Base64_Encoded_String', 0, 'base_Base64_Encoded');
+    Trace #### Encoded string available from the vBase64String variable!;
+
+    Drop Tables [base_Base64_Encoded], [base_full_binary], [base_string_table_a];
+    Let vbase_String = Null();
+    Let vbase_Base64Chars = Null();
+    Let vbase_Len1 = Null();
+    Let vbase_Len2 = Null();
+
+END SUB
+</code></pre></div></div>
+:ET
