@@ -1,7 +1,7 @@
 $pal-1: #1e271d;   /* Code background */
 $pal-2: #274637;   /* - */
 $pal-3: #2b725f;   /* - */
-$pal-4: #f59a5a;   /* Header background | Table header */
+$pal-4: #ffa8c6;   /* Header background | Table header */
 $pal-5: #819a7a;   /* - */
 $pal-6: #58a448;   /* Code */
 $pal-7: #17774c;   /* Header nav links | Header box shadow | old: 299c68 */
@@ -228,17 +228,17 @@ div.highlight {
 .topbottom-div {
   height: 100px;
   // border: 2px solid red;
-  background: #dc7575;
+  background: white;
   width: 100%;
 }
 
 .topbottom-link {
   text-decoration: none;
-  font-size: xx-large;
+  font-size: x-large;
   color: $pal-7;
-  background: $pal-8;
+  background: white;
   width: 60%;
-  padding: 5% 0;
+  padding: 2% 0;
   text-align: center;
 }
 
